@@ -8,26 +8,64 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <Button Grid.Column="0" 
-                Grid.Row="0" 
-                Content="Open" Margin="5"  
-                Height="25" 
-                VerticalAlignment="Top"
-                Command="{Binding LoadImageCommand}"/>
+        <StackPanel Grid.Row="0" Grid.Column="0">
+            <Button Height="25" Margin="5"  
+                    VerticalAlignment="Top"
+                    Content="Open"
+                    Command="{Binding LoadImageCommand}"/>
+
+            <Button Height="25" Margin="5"  
+                    VerticalAlignment="Top"
+                    Content="Open Default"
+                    Command="{Binding LoadDefaultImageCommand}"/>
+
+            <Button Height="25" Margin="5"  
+                    VerticalAlignment="Top"
+                    Content="Convert"
+                    Command="{Binding ConvertImageCommand}"/>
+
+            <Button Height="25" Margin="5"  
+                    VerticalAlignment="Top"
+                    Content="Open Default"
+                    Command="{Binding LoadDefaultImageCommand}"/>
+
+            <Button Height="25" Margin="5"  
+                    VerticalAlignment="Top"
+                    Content="Open Default"
+                    Command="{Binding LoadDefaultImageCommand}"/>
+
+            <Button Height="25" Margin="5"  
+                    VerticalAlignment="Top"
+                    Content="Open Default"
+                    Command="{Binding LoadDefaultImageCommand}"/>
+        </StackPanel>
 
 
         <Border Grid.Row="0" Grid.Column="1" 
                 BorderThickness="2" BorderBrush="AliceBlue" 
                 Height="Auto" Width="Auto" Margin="5">
-            <Image x:Name="imageHolder" 
-                   Source="{Binding ImagePath}" 
+            <Image Source="{Binding ImagePath}" 
+                   HorizontalAlignment="Stretch" 
+                   VerticalAlignment="Stretch" 
+                   Stretch="Fill"/>
+        </Border>
+
+        <Border Grid.Row="0" Grid.Column="2"
+                BorderThickness="2" 
+                BorderBrush="AliceBlue" 
+                Height="Auto" 
+                Width="Auto" Margin="5">
+            <Image Source="{Binding ImageResult}"
                    HorizontalAlignment="Stretch" 
                    VerticalAlignment="Stretch" 
                    Stretch="Fill"/>

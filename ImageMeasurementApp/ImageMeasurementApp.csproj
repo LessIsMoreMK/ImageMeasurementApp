@@ -1,23 +1,23 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net461</TargetFramework>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon />
-    <StartupObject />
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Include="FodyWeavers.xsd" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Fody" Version="6.6.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="PropertyChanged.Fody" Version="3.4.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Fody" Version="6.6.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="PropertyChanged.Fody" Version="3.4.0" />
-  </ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Helpers\" />
+	  <Folder Include="ViewModel\" />
+	</ItemGroup>
 
 </Project>
