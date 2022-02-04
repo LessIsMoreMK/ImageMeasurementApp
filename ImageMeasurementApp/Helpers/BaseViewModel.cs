@@ -1,7 +1,7 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using System;
 
 namespace ImageMeasurementApp
 {

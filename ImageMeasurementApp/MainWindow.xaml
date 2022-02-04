@@ -5,19 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ImageMeasurementApp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        MinHeight="450" MinWidth="800"
+        Title="MainWindow" Height="600" Width="1100">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
+        <!-- Side Menu -->
         <StackPanel Grid.Row="0" Grid.Column="0">
             <Button Height="25" Margin="5"  
                     VerticalAlignment="Top"
@@ -31,44 +28,63 @@
 
             <Button Height="25" Margin="5"  
                     VerticalAlignment="Top"
-                    Content="Convert"
+                    Content="Convert to 8bit"
                     Command="{Binding ConvertImageCommand}"/>
-
-            <Button Height="25" Margin="5"  
-                    VerticalAlignment="Top"
-                    Content="Open Default"
-                    Command="{Binding LoadDefaultImageCommand}"/>
-
-            <Button Height="25" Margin="5"  
-                    VerticalAlignment="Top"
-                    Content="Open Default"
-                    Command="{Binding LoadDefaultImageCommand}"/>
-
-            <Button Height="25" Margin="5"  
-                    VerticalAlignment="Top"
-                    Content="Open Default"
-                    Command="{Binding LoadDefaultImageCommand}"/>
         </StackPanel>
 
-
-        <Border Grid.Row="0" Grid.Column="1" 
-                BorderThickness="2" BorderBrush="AliceBlue" 
-                Height="Auto" Width="Auto" Margin="5">
-            <Image Source="{Binding ImagePath}" 
-                   HorizontalAlignment="Stretch" 
-                   VerticalAlignment="Stretch" 
-                   Stretch="Fill"/>
+        
+        <!-- Image Container -->
+        <Border Grid.Row="1" Grid.Column="1"
+                BorderThickness="1" 
+                BorderBrush="LightBlue" 
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch">
+            <Grid>
+                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" x:Name="SV" >
+                        <Image x:Name="Img" Source="{Binding DisplayImage}"/>
+                </ScrollViewer>
+            </Grid>
         </Border>
+        
+        
+        <!-- ToolBox -->
+        <StackPanel Grid.Row="0" Grid.Column="2" Margin="5 0 0 0">
+            <Border Width="250" Height="150"
+                    BorderThickness="1" BorderBrush="LightBlue">
+                <Grid x:Name="Canv">
+                    <Image Source="{Binding DisplayImage}"  Stretch="Fill"/>
+                    <Rectangle x:Name="HRect" Fill="#75ffffff" Stroke="Black" Width="50" Height="50" />
+                </Grid>
+            </Border>
 
-        <Border Grid.Row="0" Grid.Column="2"
-                BorderThickness="2" 
-                BorderBrush="AliceBlue" 
-                Height="Auto" 
-                Width="Auto" Margin="5">
-            <Image Source="{Binding ImageResult}"
-                   HorizontalAlignment="Stretch" 
-                   VerticalAlignment="Stretch" 
-                   Stretch="Fill"/>
-        </Border>
+            <ToggleButton Content="Pixel/Real Size" Margin="0 5 0 0" Width="150" HorizontalAlignment="Left"/>
+
+            <ListBox Margin="0 5 5 0" ItemsSource="{Binding MeasureUnits}" 
+                     SelectedItem="{Binding SelectedUnits, Mode=TwoWay}"/>
+
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Pointer coordinates" Width="115"/>
+                <CheckBox VerticalAlignment="Center" HorizontalAlignment="Center"
+                          IsChecked="{Binding PointerCoordinates}"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Horizontal grid" Width="115"/>
+                <CheckBox VerticalAlignment="Center" HorizontalAlignment="Center"
+                          IsChecked="{Binding HorizontalGrid}"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Vertical grid" Width="115"/>
+                <CheckBox VerticalAlignment="Center" HorizontalAlignment="Center"
+                          IsChecked="{Binding VerticalGrid}"/>
+            </StackPanel>
+
+            <Label>Shapes list:</Label>
+            <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <ListBox Name="shapesList" Height="150" Margin="5"/>
+            </ScrollViewer>
+            
+        </StackPanel>
     </Grid>
 </Window>
