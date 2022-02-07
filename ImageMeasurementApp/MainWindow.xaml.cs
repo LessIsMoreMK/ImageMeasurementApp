@@ -11,7 +11,7 @@ namespace ImageMeasurementApp
         {
             InitializeComponent();
 
-            DataContext = new MainViewModel();
+            DataContext = new WindowViewModel(this);
         }
     }
 }

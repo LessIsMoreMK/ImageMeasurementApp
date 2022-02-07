@@ -1,0 +1,25 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:ImageMeasurementApp">
+    
+    <Color x:Key="GrayDark">#373737</Color>
+    <SolidColorBrush x:Key="GrayDarkBrush" Color="{StaticResource GrayDark}"/>
+    <Color x:Key="GrayMedium">#575757</Color>
+    <SolidColorBrush x:Key="GrayMediumBrush" Color="{StaticResource GrayMedium}"/>
+    <Color x:Key="GrayLight">#808080</Color>
+    <SolidColorBrush x:Key="GrayLightBrush" Color="{StaticResource GrayLight}"/>
+    <Color x:Key="GrayVeryLight">#C0C0C0</Color>
+    <SolidColorBrush x:Key="GrayVeryLightBrush" Color="{StaticResource GrayVeryLight}"/>
+    <Color x:Key="AlmostWhite">#DBDBDB</Color>
+    <SolidColorBrush x:Key="AlmostWhiteBrush" Color="{StaticResource AlmostWhite}"/>
+    <Color x:Key="White">#FFFFFF</Color>
+    <SolidColorBrush x:Key="WhiteBrush" Color="{StaticResource White}"/>
+
+    <Color x:Key="GreenDark">#004F3A</Color>
+    <SolidColorBrush x:Key="GreenDarkBrush" Color="{StaticResource GreenDark}"/>
+    <Color x:Key="GreenMedium">#007D5C</Color>
+    <SolidColorBrush x:Key="GreenMediumBrush" Color="{StaticResource GreenMedium}"/>
+    <Color x:Key="GreenLight">#00B887</Color>
+    <SolidColorBrush x:Key="GreenLightBrush" Color="{StaticResource GreenLight}"/>
+
+</ResourceDictionary>

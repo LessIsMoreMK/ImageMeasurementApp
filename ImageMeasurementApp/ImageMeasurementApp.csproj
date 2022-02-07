@@ -2,10 +2,16 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>net472</TargetFramework>
     <UseWPF>true</UseWPF>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Fonts\fontawesome.ttf" />
+    <None Remove="Images\icon.png" />
+    <None Remove="Images\logo.png" />
+  </ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Fody" Version="6.6.0">
@@ -16,8 +22,17 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Helpers\" />
-	  <Folder Include="ViewModel\" />
+	  <Folder Include="Enums\" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\RulerControl.Wpf\RulerControl.Wpf.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Resource Include="Fonts\fontawesome.ttf" />
+	  <Resource Include="Images\logo.png" />
+	</ItemGroup>
+
 
 </Project>

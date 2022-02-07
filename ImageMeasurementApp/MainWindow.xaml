@@ -3,88 +3,257 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:rulerControl="clr-namespace:RulerControl.Wpf;assembly=RulerControl.Wpf"
         xmlns:local="clr-namespace:ImageMeasurementApp"
         mc:Ignorable="d"
-        MinHeight="450" MinWidth="800"
-        Title="MainWindow" Height="600" Width="1100">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
+        x:Name="AppWindow"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        WindowStartupLocation="CenterScreen"
+        Title="Image Measurement App" 
+        Height="600" Width="800"
+        Icon="Images/logo.png"
+        MinHeight="{Binding WindowMinimumHeight}"
+        MinWidth="{Binding WindowMinimumWidth}">
 
-        <!-- Side Menu -->
-        <StackPanel Grid.Row="0" Grid.Column="0">
-            <Button Height="25" Margin="5"  
-                    VerticalAlignment="Top"
-                    Content="Open"
-                    Command="{Binding LoadImageCommand}"/>
+    <Window.Resources>
+        <Style TargetType="{x:Type local:MainWindow}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Window}">
 
-            <Button Height="25" Margin="5"  
-                    VerticalAlignment="Top"
-                    Content="Open Default"
-                    Command="{Binding LoadDefaultImageCommand}"/>
+                        <!-- Outer Border With The Drop Shadow Margin -->
+                        <Border Padding="{Binding OuterMarginSize, FallbackValue=10}"
+                                BorderBrush="{StaticResource GreenLightBrush}" 
+                                BorderThickness="{Binding FlatBorderThickness}">
 
-            <Button Height="25" Margin="5"  
-                    VerticalAlignment="Top"
-                    Content="Convert to 8bit"
-                    Command="{Binding ConvertImageCommand}"/>
-        </StackPanel>
+                            <!-- Main Window Outline -->
+                            <Grid>
 
-        
-        <!-- Image Container -->
-        <Border Grid.Row="1" Grid.Column="1"
-                BorderThickness="1" 
-                BorderBrush="LightBlue" 
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch">
-            <Grid>
-                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" x:Name="SV" >
-                        <Image x:Name="Img" Source="{Binding DisplayImage}"/>
-                </ScrollViewer>
-            </Grid>
-        </Border>
-        
-        
-        <!-- ToolBox -->
-        <StackPanel Grid.Row="0" Grid.Column="2" Margin="5 0 0 0">
-            <Border Width="250" Height="150"
-                    BorderThickness="1" BorderBrush="LightBlue">
-                <Grid x:Name="Canv">
-                    <Image Source="{Binding DisplayImage}"  Stretch="Fill"/>
-                    <Rectangle x:Name="HRect" Fill="#75ffffff" Stroke="Black" Width="50" Height="50" />
+                                <!-- Outer Dragging Border -->
+                                <Border BorderThickness="{Binding BeingMoved, Converter={local:BooleanToBorderThicknessConverter}}"
+                                        Panel.ZIndex="2"
+                                        CornerRadius="{Binding WindowCornerRadius, FallbackValue=10}"
+                                        BorderBrush="{StaticResource GreenLightBrush}" />
+
+                                <!-- Opacity Mask For Corners On Grid-->
+                                <Border x:Name="Container" Background="{StaticResource GrayDarkBrush}"
+                                        CornerRadius="{Binding WindowCornerRadius, FallbackValue=10}"/>
+
+                                <!-- Window Border And Drop Shadow -->
+                                <Border CornerRadius="{Binding WindowCornerRadius, FallbackValue=10}"
+                                        Background="{StaticResource GrayDarkBrush}">
+                                    <Border.Effect>
+                                        <DropShadowEffect ShadowDepth="0" Opacity="0.8"/>
+                                    </Border.Effect>
+
+                                    <!-- Main Window Content-->
+                                    <Grid>
+                                        <!-- Corner Clipping -->
+                                        <Grid.OpacityMask>
+                                            <VisualBrush Visual="{Binding ElementName=Container}"/>
+                                        </Grid.OpacityMask>
+
+                                        <Grid.RowDefinitions>
+                                            <!-- Title Bar -->
+                                            <RowDefinition Height="{Binding TitleHeightGridLength, FallbackValue=30}"/>
+                                            <!-- Underline -->
+                                            <RowDefinition Height="Auto"/>
+                                            <!-- Internet Connection Bar-->
+                                            <RowDefinition Height="Auto"/>
+                                            <!-- Window Content -->
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+
+                                        <!-- Title Bar-->
+                                        <Grid Grid.Column="0" Panel.ZIndex="1">
+                                            <Grid.ColumnDefinitions>
+                                                <!-- Icon -->
+                                                <ColumnDefinition Width="Auto"/>
+                                                <!-- Title -->
+                                                <ColumnDefinition Width="*"/>
+                                                <!-- Windows Buttons-->
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- Icon -->
+                                            <Button Command="{Binding MenuCommand}"
+                                                    Style="{StaticResource SystemIconButton}">
+                                                <Image Source="/Images/logo.png"/>
+                                            </Button>
+
+                                            <!-- Title -->
+                                            <Viewbox Grid.Column="0" Grid.ColumnSpan="3" Margin="0">
+                                                <StackPanel>
+                                                    <TextBlock FontSize="{StaticResource FontSizeRegular}" 
+                                                               FontFamily="{StaticResource BlackOpsOneRegular}" 
+                                                               Margin="0 2 0 2"
+                                                               Foreground="{StaticResource GreenLightBrush}"
+                                                               Text="Image Measurement App">
+                                                    </TextBlock>
+                                                </StackPanel>
+                                            </Viewbox>
+
+                                            <!-- Window Buttons -->
+                                            <StackPanel Grid.Column="2" Orientation="Horizontal">
+                                                <Button Content="{StaticResource FontAwesomeMinimizeIcon}" 
+                                                        Style="{StaticResource WindowControlButton}"
+                                                        Command="{Binding MinimizeCommand}"
+                                                        ToolTip="Minimize"
+                                                        FontFamily="{StaticResource FontAwesome}"/>
+                                                <Button Content="{Binding MaximizeIcon}"
+                                                        Style="{StaticResource WindowControlButton}"
+                                                        ToolTip="{Binding MaximizeText}"
+                                                        Command="{Binding MaximizeCommand}"/>
+                                                <Button Content="{StaticResource FontAwesomeCloseIcon}" 
+                                                        Style="{StaticResource WindowCloseButton}"
+                                                        ToolTip="Close"
+                                                        Command="{Binding CloseCommand}">
+                                                    <Button.Resources>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="CornerRadius" 
+                                                                    Value="{Binding WindowCornerRadiusForCloseButton, FallbackValue=10}"/>
+                                                        </Style>
+                                                    </Button.Resources>
+                                                </Button>
+                                            </StackPanel>
+                                        </Grid>
+
+                                        <Border Grid.Row="1" Height="1" BorderThickness="0 1 0 0">
+                                            <!-- Underline -->
+                                            <Border.BorderBrush>
+                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                    <GradientStop Color="{StaticResource GreenLight}" Offset="0"/>
+                                                    <GradientStop Color="{StaticResource GreenMedium}" Offset="0.5"/>
+                                                    <GradientStop Color="{StaticResource GreenLight}" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </Border.BorderBrush>
+                                        </Border>
+
+
+                                        <!-- Page Content -->
+                                        <Border Grid.Row="3" 
+                                                Padding="{Binding InnerContentPadding}" 
+                                                ClipToBounds="True">
+                                            <Border>
+                                                <ContentPresenter/>
+                                            </Border>
+                                        </Border>
+
+                                    </Grid>
+
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome ResizeBorderThickness="{Binding ResizeBorderThickness}"
+                      CaptionHeight="{Binding TitleHeight}"
+                      GlassFrameThickness="0"
+                      CornerRadius="0"/>
+    </WindowChrome.WindowChrome>
+
+    
+    <!-- Main Content -->
+    <Border Background="{StaticResource GrayDarkBrush}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Side Menu -->
+            <StackPanel Grid.Row="0" Grid.Column="0">
+                <Button Style="{StaticResource IconTextButton}"
+                        Command="{Binding LoadImageCommand}"
+                        Content="Open Image"
+                        Tag="{StaticResource FontAwesomeImageIcon}"/>
+
+                <Button Style="{StaticResource IconTextButton}"
+                        Command="{Binding LoadDefaultImageCommand}"
+                        Content="Open Sample"
+                        Tag="{StaticResource FontAwesomeSampleIcon}"/>
+
+                <Button Style="{StaticResource IconTextButton}"
+                        Command="{Binding ConvertImageCommand}"
+                        Content="Convert to 8bit"
+                        Tag="{StaticResource FontAwesomeConvertIcon}"/>
+
+            </StackPanel>
+
+
+            <!-- Image Container -->
+            <Border Grid.Row="1" Grid.Column="1"
+                    BorderThickness="1" 
+                    BorderBrush="{StaticResource GreenMediumBrush}" 
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch">
+                <Grid>
+                    <Image Source="{Binding DisplayImage}" 
+                            Stretch="Fill"
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Left"
+                            x:Name="mainImage"
+                            MaxHeight="{Binding Path=ActualHeight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Border}}}"
+                            MaxWidth="{Binding Path=ActualWidth, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Border}}}"/>
                 </Grid>
             </Border>
 
-            <ToggleButton Content="Pixel/Real Size" Margin="0 5 0 0" Width="150" HorizontalAlignment="Left"/>
 
-            <ListBox Margin="0 5 5 0" ItemsSource="{Binding MeasureUnits}" 
-                     SelectedItem="{Binding SelectedUnits, Mode=TwoWay}"/>
+            <!-- ToolBox -->
+            <StackPanel Grid.Row="0" Grid.Column="2">
+                <Border Width="250" Height="150"
+                        BorderThickness="1" BorderBrush="{StaticResource GreenMediumBrush}">
+                    <Grid x:Name="Canv">
+                        <Image Source="{Binding DisplayImage}" Stretch="Fill"/>
+                        <Rectangle x:Name="HRect" Fill="#75ffffff" Stroke="Black" Width="50" Height="50" />
+                    </Grid>
+                </Border>
 
-            <StackPanel Orientation="Horizontal">
-                <Label Content="Pointer coordinates" Width="115"/>
-                <CheckBox VerticalAlignment="Center" HorizontalAlignment="Center"
-                          IsChecked="{Binding PointerCoordinates}"/>
+                <ListBox ItemsSource="{Binding MeasureUnits}" 
+                         Background="{StaticResource GrayDarkBrush}"
+                         BorderBrush="{StaticResource GreenMediumBrush}"
+                         Foreground="{StaticResource WhiteBrush}"
+                         FontSize="{StaticResource FontSizeRegular}"
+                         SelectedItem="{Binding SelectedUnits, Mode=TwoWay}"/>
+
+                <Border BorderBrush="{StaticResource GreenMediumBrush}" 
+                        BorderThickness="1" >
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0 5">
+                            <TextBox Text="Pointer coordinates" 
+                                     Width="135" 
+                                     FontWeight="Bold"/>
+                            <CheckBox VerticalAlignment="Center" 
+                                      HorizontalAlignment="Center"
+                                      IsChecked="{Binding PointerCoordinates}"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0 5">
+                            <TextBox Text="Horizontal grid" 
+                                     Width="135" 
+                                     FontWeight="Bold"/>
+                            <CheckBox VerticalAlignment="Center" 
+                                      HorizontalAlignment="Center"
+                                      IsChecked="{Binding HorizontalGrid}"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0 5">
+                            <TextBox Text="Vertical grid" Width="135" FontWeight="Bold"/>
+                            <CheckBox VerticalAlignment="Center" 
+                                      HorizontalAlignment="Center"
+                                      IsChecked="{Binding VerticalGrid}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
             </StackPanel>
-
-            <StackPanel Orientation="Horizontal">
-                <Label Content="Horizontal grid" Width="115"/>
-                <CheckBox VerticalAlignment="Center" HorizontalAlignment="Center"
-                          IsChecked="{Binding HorizontalGrid}"/>
-            </StackPanel>
-
-            <StackPanel Orientation="Horizontal">
-                <Label Content="Vertical grid" Width="115"/>
-                <CheckBox VerticalAlignment="Center" HorizontalAlignment="Center"
-                          IsChecked="{Binding VerticalGrid}"/>
-            </StackPanel>
-
-            <Label>Shapes list:</Label>
-            <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto">
-                <ListBox Name="shapesList" Height="150" Margin="5"/>
-            </ScrollViewer>
-            
-        </StackPanel>
-    </Grid>
+        </Grid>
+    </Border>
 </Window>
