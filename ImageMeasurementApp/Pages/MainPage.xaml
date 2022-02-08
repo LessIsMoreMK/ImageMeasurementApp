@@ -44,7 +44,10 @@
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch">
                 <Grid>
-                    <local:ImageZoomControl ClipToBounds="True">
+                    <!-- Zoom Control -->
+                    <local:ImageZoomControl ClipToBounds="True"
+                                            Focusable="True">
+                        <!-- Image -->
                         <Image Source="{Binding DisplayImage}" 
                                Stretch="Fill"
                                VerticalAlignment="Top"
@@ -53,6 +56,53 @@
                                MaxHeight="{Binding Path=ActualHeight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Border}}}"
                                MaxWidth="{Binding Path=ActualWidth, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Border}}}"/>
                     </local:ImageZoomControl>
+
+                    <!-- Horizontal Ruler -->
+                    <local:Ruler Foreground="{Binding RulerTextColor}"
+                                 Visibility="Visible"
+                                 Height="15"
+                                 VerticalAlignment="Top"
+                                 HorizontalAlignment="Stretch" 
+                                 MarkerControlReference="{Binding ElementName=MainBorder}"
+                                 MaxValue="{Binding ImageDisplayWidth}"
+                                 MajorStepValues="{Binding MajorStep}"
+                                 ValueStepTransform="{Binding ValueStepTransform}"
+                                 MinorStepRatio="0.3"
+                                 IsHitTestVisible="False"
+                                 StepColor="{Binding RulerGridColor}">
+                        <local:Ruler.Resources>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                                <Setter Property="Margin" Value="2 0"/>
+                                <Setter Property="FontSize" Value="10"/>
+                            </Style>
+                        </local:Ruler.Resources>
+                    </local:Ruler>
+
+                    <!-- Vertical Ruler -->
+                    <local:Ruler Foreground="{Binding RulerTextColor}"
+                                 Width="15"
+                                 VerticalAlignment="Stretch"
+                                 HorizontalAlignment="Left" 
+                                 MarkerControlReference="{Binding ElementName=MainBorder}"
+                                 MaxValue="{Binding ImageDisplayWidth}"
+                                 MajorStepValues="{Binding MajorStep}"
+                                 ValueStepTransform="{Binding ValueStepTransform}"
+                                 DisplayZeroLine="False"
+                                 Position="Left"
+                                 IsHitTestVisible="False"
+                                 MinorStepRatio="0.3"
+                                 StepColor="{Binding RulerGridColor}">
+                        <local:Ruler.Resources>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                                <Setter Property="Margin" Value="2 0"/>
+                                <Setter Property="FontSize" Value="10"/>
+                                <Setter Property="LineHeight" Value="10"/>
+                                <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
+                                <Setter Property="FontSize" Value="10"/>
+                            </Style>
+                        </local:Ruler.Resources>
+                    </local:Ruler>
+
                 </Grid>
             </Border>
 

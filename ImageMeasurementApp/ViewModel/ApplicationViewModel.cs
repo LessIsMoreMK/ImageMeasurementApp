@@ -39,7 +39,6 @@ namespace ImageMeasurementApp
             }
         }
 
-
         public double ImagePixelWidth { get; set; }
         public double ImagePixelHeight { get; set; }
 
@@ -111,8 +110,9 @@ namespace ImageMeasurementApp
             }
         }
 
-
-
+        public string RulerTextColor { get; set; } = "Yellow";
+        public string RulerGridColor { get; set; } = "Blue";
+        public string RulerHorizontalHeight { get; set; } = "25";
 
         public bool PointerCoordinates { get; set; }
         public bool HorizontalGrid { get; set; }
