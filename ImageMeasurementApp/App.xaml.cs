@@ -1,7 +1,6 @@
 ﻿using Dna;
 using System.Threading.Tasks;
 using System.Windows;
-using static ImageMeasurementApp.DI;
 
 namespace ImageMeasurementApp
 {
@@ -22,7 +21,7 @@ namespace ImageMeasurementApp
             // Setup the main application 
             await ApplicationSetupAsync();
 
-            ViewModelApplication.GoToPage(ApplicationPage.MainPage);
+            ImageMeasurementApp.DI.ViewModelApplication.GoToPage(ApplicationPage.MainPage);
 
             // Show the main window
             Current.MainWindow = new MainWindow();
@@ -39,6 +38,8 @@ namespace ImageMeasurementApp
                 .AddViewModels()
                 .AddClientServices()
                 .Build();
+
+            await Task.Delay(1);
         }
     }
 }

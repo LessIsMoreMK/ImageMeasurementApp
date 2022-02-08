@@ -19,16 +19,19 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="PropertyChanged.Fody" Version="3.4.0" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\RulerControl.Wpf\RulerControl.Wpf.csproj" />
+		<PackageReference Include="PropertyChanged.Fody" Version="3.4.0" PrivateAssets="All"/>
+		<PackageReference Include="System.Reactive" Version="5.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <Resource Include="Fonts\fontawesome.ttf" />
 	  <Resource Include="Images\logo.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Update="Styles\Ruler.xaml">
+	    <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+	  </Page>
 	</ItemGroup>
 
 
