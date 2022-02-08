@@ -11,7 +11,7 @@
         AllowsTransparency="True"
         WindowStartupLocation="CenterScreen"
         Title="Image Measurement App" 
-        Height="600" Width="800"
+        Height="600" Width="1000"
         Icon="Images/logo.png"
         MinHeight="{Binding WindowMinimumHeight}"
         MinWidth="{Binding WindowMinimumWidth}">
@@ -24,7 +24,7 @@
 
                         <!-- Outer Border With The Drop Shadow Margin -->
                         <Border Padding="{Binding OuterMarginSize, FallbackValue=10}"
-                                BorderBrush="{StaticResource GreenLightBrush}" 
+                                BorderBrush="{StaticResource BlueLightBrush}" 
                                 BorderThickness="{Binding FlatBorderThickness}">
 
                             <!-- Main Window Outline -->
@@ -34,7 +34,7 @@
                                 <Border BorderThickness="{Binding BeingMoved, Converter={local:BooleanToBorderThicknessConverter}}"
                                         Panel.ZIndex="2"
                                         CornerRadius="{Binding WindowCornerRadius, FallbackValue=10}"
-                                        BorderBrush="{StaticResource GreenLightBrush}" />
+                                        BorderBrush="{StaticResource BlueLightBrush}" />
 
                                 <!-- Opacity Mask For Corners On Grid-->
                                 <Border x:Name="Container" Background="{StaticResource GrayDarkBrush}"
@@ -88,7 +88,7 @@
                                                     <TextBlock FontSize="{StaticResource FontSizeRegular}" 
                                                                FontFamily="{StaticResource BlackOpsOneRegular}" 
                                                                Margin="0 2 0 2"
-                                                               Foreground="{StaticResource GreenLightBrush}"
+                                                               Foreground="{StaticResource BlueLightBrush}"
                                                                Text="Image Measurement App">
                                                     </TextBlock>
                                                 </StackPanel>
@@ -123,9 +123,9 @@
                                             <!-- Underline -->
                                             <Border.BorderBrush>
                                                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                                                    <GradientStop Color="{StaticResource GreenLight}" Offset="0"/>
-                                                    <GradientStop Color="{StaticResource GreenMedium}" Offset="0.5"/>
-                                                    <GradientStop Color="{StaticResource GreenLight}" Offset="1"/>
+                                                    <GradientStop Color="{StaticResource BlueLight}" Offset="0"/>
+                                                    <GradientStop Color="{StaticResource BlueMedium}" Offset="0.5"/>
+                                                    <GradientStop Color="{StaticResource BlueLight}" Offset="1"/>
                                                 </LinearGradientBrush>
                                             </Border.BorderBrush>
                                         </Border>
@@ -158,102 +158,11 @@
                       CornerRadius="0"/>
     </WindowChrome.WindowChrome>
 
-    
     <!-- Main Content -->
-    <Border Background="{StaticResource GrayDarkBrush}">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-
-            <!-- Side Menu -->
-            <StackPanel Grid.Row="0" Grid.Column="0">
-                <Button Style="{StaticResource IconTextButton}"
-                        Command="{Binding LoadImageCommand}"
-                        Content="Open Image"
-                        Tag="{StaticResource FontAwesomeImageIcon}"/>
-
-                <Button Style="{StaticResource IconTextButton}"
-                        Command="{Binding LoadDefaultImageCommand}"
-                        Content="Open Sample"
-                        Tag="{StaticResource FontAwesomeSampleIcon}"/>
-
-                <Button Style="{StaticResource IconTextButton}"
-                        Command="{Binding ConvertImageCommand}"
-                        Content="Convert to 8bit"
-                        Tag="{StaticResource FontAwesomeConvertIcon}"/>
-
-            </StackPanel>
-
-
-            <!-- Image Container -->
-            <Border Grid.Row="1" Grid.Column="1"
-                    BorderThickness="1" 
-                    BorderBrush="{StaticResource GreenMediumBrush}" 
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch">
-                <Grid>
-                    <Image Source="{Binding DisplayImage}" 
-                            Stretch="Fill"
-                            VerticalAlignment="Top"
-                            HorizontalAlignment="Left"
-                            x:Name="mainImage"
-                            MaxHeight="{Binding Path=ActualHeight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Border}}}"
-                            MaxWidth="{Binding Path=ActualWidth, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Border}}}"/>
-                </Grid>
-            </Border>
-
-
-            <!-- ToolBox -->
-            <StackPanel Grid.Row="0" Grid.Column="2">
-                <Border Width="250" Height="150"
-                        BorderThickness="1" BorderBrush="{StaticResource GreenMediumBrush}">
-                    <Grid x:Name="Canv">
-                        <Image Source="{Binding DisplayImage}" Stretch="Fill"/>
-                        <Rectangle x:Name="HRect" Fill="#75ffffff" Stroke="Black" Width="50" Height="50" />
-                    </Grid>
-                </Border>
-
-                <ListBox ItemsSource="{Binding MeasureUnits}" 
-                         Background="{StaticResource GrayDarkBrush}"
-                         BorderBrush="{StaticResource GreenMediumBrush}"
-                         Foreground="{StaticResource WhiteBrush}"
-                         FontSize="{StaticResource FontSizeRegular}"
-                         SelectedItem="{Binding SelectedUnits, Mode=TwoWay}"/>
-
-                <Border BorderBrush="{StaticResource GreenMediumBrush}" 
-                        BorderThickness="1" >
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="0 5">
-                            <TextBox Text="Pointer coordinates" 
-                                     Width="135" 
-                                     FontWeight="Bold"/>
-                            <CheckBox VerticalAlignment="Center" 
-                                      HorizontalAlignment="Center"
-                                      IsChecked="{Binding PointerCoordinates}"/>
-                        </StackPanel>
-
-                        <StackPanel Orientation="Horizontal" Margin="0 5">
-                            <TextBox Text="Horizontal grid" 
-                                     Width="135" 
-                                     FontWeight="Bold"/>
-                            <CheckBox VerticalAlignment="Center" 
-                                      HorizontalAlignment="Center"
-                                      IsChecked="{Binding HorizontalGrid}"/>
-                        </StackPanel>
-
-                        <StackPanel Orientation="Horizontal" Margin="0 5">
-                            <TextBox Text="Vertical grid" Width="135" FontWeight="Bold"/>
-                            <CheckBox VerticalAlignment="Center" 
-                                      HorizontalAlignment="Center"
-                                      IsChecked="{Binding VerticalGrid}"/>
-                        </StackPanel>
-                    </StackPanel>
-                </Border>
-
-            </StackPanel>
-        </Grid>
-    </Border>
+    <local:PageHost Grid.Column="1" 
+                    CurrentPage="{Binding ApplicationViewModel.CurrentPage,
+                                        Source={x:Static local:ViewModelLocator.Instance}}"
+                    CurrentPageViewModel="{Binding ApplicationViewModel.CurrentPageViewModel,
+                                            Source={x:Static local:ViewModelLocator.Instance}}"/>
+    
 </Window>

@@ -15,11 +15,11 @@
     <Color x:Key="White">#FFFFFF</Color>
     <SolidColorBrush x:Key="WhiteBrush" Color="{StaticResource White}"/>
 
-    <Color x:Key="GreenDark">#004F3A</Color>
-    <SolidColorBrush x:Key="GreenDarkBrush" Color="{StaticResource GreenDark}"/>
-    <Color x:Key="GreenMedium">#007D5C</Color>
-    <SolidColorBrush x:Key="GreenMediumBrush" Color="{StaticResource GreenMedium}"/>
-    <Color x:Key="GreenLight">#00B887</Color>
-    <SolidColorBrush x:Key="GreenLightBrush" Color="{StaticResource GreenLight}"/>
+    <Color x:Key="BlueDark">#00445e</Color>
+    <SolidColorBrush x:Key="BlueDarkBrush" Color="{StaticResource BlueDark}"/>
+    <Color x:Key="BlueMedium">#00729e</Color>
+    <SolidColorBrush x:Key="BlueMediumBrush" Color="{StaticResource BlueMedium}"/>
+    <Color x:Key="BlueLight">#0099d4</Color>
+    <SolidColorBrush x:Key="BlueLightBrush" Color="{StaticResource BlueLight}"/>
 
 </ResourceDictionary>

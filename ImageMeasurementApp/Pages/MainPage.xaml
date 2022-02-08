@@ -1,0 +1,129 @@
+﻿<local:BasePage x:TypeArguments="local:ApplicationViewModel" 
+      x:Class="ImageMeasurementApp.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ImageMeasurementApp"
+      xmlns:rulerControl="clr-namespace:RulerControl.Wpf;assembly=RulerControl.Wpf"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800">
+
+    <local:BasePage.Resources>
+    <ResourceDictionary>
+        <ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary Source="pack://application:,,,/RulerControl.Wpf;component/RulerStyle.xaml"/>
+        </ResourceDictionary.MergedDictionaries>
+
+        <Style TargetType="GroupBox" BasedOn="{StaticResource {x:Type GroupBox}}">
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="Margin" Value="0 10"/>
+            <Setter Property="Padding" Value="10"/>
+        </Style>
+
+        <Style x:Key="HearderTextboxStyle" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Setter Property="DockPanel.Dock" Value="Left"/>
+            <Setter Property="Width" Value="100"/>
+        </Style>
+    </ResourceDictionary>
+    </local:BasePage.Resources>
+    
+    
+    <Border x:Name="MainBorder" 
+            Background="{StaticResource GrayDarkBrush}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Side Menu -->
+            <StackPanel Grid.Row="0" Grid.Column="0">
+                <Button Style="{StaticResource IconTextButton}"
+                        Command="{Binding LoadImageCommand}"
+                        Content="Open Image"
+                        Tag="{StaticResource FontAwesomeImageIcon}"/>
+
+                <Button Style="{StaticResource IconTextButton}"
+                        Command="{Binding LoadDefaultImageCommand}"
+                        Content="Open Sample"
+                        Tag="{StaticResource FontAwesomeSampleIcon}"/>
+
+                <Button Style="{StaticResource IconTextButton}"
+                        Command="{Binding ConvertImageCommand}"
+                        Content="Convert to 8bit"
+                        Tag="{StaticResource FontAwesomeConvertIcon}"/>
+
+            </StackPanel>
+
+
+            <!-- Image Container -->
+            <Border Grid.Row="1" Grid.Column="1"
+                    BorderThickness="1" 
+                    BorderBrush="{StaticResource BlueMediumBrush}" 
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch">
+                <Grid>
+                    <Image Source="{Binding DisplayImage}" 
+                            Stretch="Fill"
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Left"
+                            x:Name="mainImage"
+                            MaxHeight="{Binding Path=ActualHeight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Border}}}"
+                            MaxWidth="{Binding Path=ActualWidth, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Border}}}"/>
+                </Grid>
+            </Border>
+
+
+            <!-- ToolBox -->
+            <StackPanel Grid.Row="0" Grid.Column="2">
+                <Border Width="250" Height="150"
+                        BorderThickness="1" BorderBrush="{StaticResource BlueMediumBrush}">
+                    <Grid x:Name="Canv">
+                        <Image Source="{Binding DisplayImage}" Stretch="Fill"/>
+                        <Rectangle x:Name="HRect" Fill="#75ffffff" Stroke="Black" Width="50" Height="50" />
+                    </Grid>
+                </Border>
+
+                <ListBox ItemsSource="{Binding MeasureUnits}" 
+                         SelectedIndex="{Binding SelectedUnitIndex}"
+                         Background="{StaticResource GrayDarkBrush}"
+                         BorderBrush="{StaticResource BlueMediumBrush}"
+                         Foreground="{StaticResource WhiteBrush}"
+                         FontSize="{StaticResource FontSizeRegular}"/>
+
+                <Border BorderBrush="{StaticResource BlueMediumBrush}" 
+                        BorderThickness="1" >
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0 5">
+                            <TextBox Text="Pointer coordinates" 
+                                     Width="135" 
+                                     FontWeight="Bold"/>
+                            <CheckBox VerticalAlignment="Center" 
+                                      HorizontalAlignment="Center"
+                                      IsChecked="{Binding PointerCoordinates}"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0 5">
+                            <TextBox Text="Horizontal grid" 
+                                     Width="135" 
+                                     FontWeight="Bold"/>
+                            <CheckBox VerticalAlignment="Center" 
+                                      HorizontalAlignment="Center"
+                                      IsChecked="{Binding HorizontalGrid}"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0 5">
+                            <TextBox Text="Vertical grid" Width="135" FontWeight="Bold"/>
+                            <CheckBox VerticalAlignment="Center" 
+                                      HorizontalAlignment="Center"
+                                      IsChecked="{Binding VerticalGrid}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </Grid>
+    </Border>
+</local:BasePage>
