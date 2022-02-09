@@ -100,6 +100,11 @@ namespace ImageMeasurementApp
             // Move the previous page into the old page frame
             oldPageFrame.Content = oldPageContent;
 
+            // Remove previous page when the Loaded event fires
+            if (oldPageContent is BasePage oldPage)
+            {
+                Application.Current.Dispatcher.Invoke(() => oldPageFrame.Content = null);
+            }
 
             // Set the new page content
             newPageFrame.Content = currentPage.ToBasePage(currentPageViewModel);

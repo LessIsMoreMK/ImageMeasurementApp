@@ -9,7 +9,7 @@ namespace ImageMeasurementApp
     public static class FrameworkConstructionExtensions
     {
         /// <summary>
-        /// Injects the view models needed for Coin Flipper application
+        /// Injects the view models needed for application
         /// </summary>
         /// <param name="construction"></param>
         /// <returns></returns>
@@ -23,8 +23,8 @@ namespace ImageMeasurementApp
         }
 
         /// <summary>
-        /// Injects the Coin Flipper client application services needed
-        /// for the Coin Flipper application
+        /// Injects the client application services needed
+        /// for the application
         /// </summary>
         /// <param name="construction"></param>
         /// <returns></returns>

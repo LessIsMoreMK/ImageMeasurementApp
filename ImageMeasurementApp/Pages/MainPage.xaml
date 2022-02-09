@@ -55,12 +55,13 @@
                                x:Name="mainImage"
                                MaxHeight="{Binding Path=ActualHeight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Border}}}"
                                MaxWidth="{Binding Path=ActualWidth, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Border}}}"/>
+                        
                     </local:ImageZoomControl>
 
                     <!-- Horizontal Ruler -->
                     <local:Ruler Foreground="{Binding RulerTextColor}"
                                  Visibility="Visible"
-                                 Height="15"
+                                 Height="{Binding ActualWidth, ElementName=MainBorder}"
                                  VerticalAlignment="Top"
                                  HorizontalAlignment="Stretch" 
                                  MarkerControlReference="{Binding ElementName=MainBorder}"
@@ -69,7 +70,7 @@
                                  ValueStepTransform="{Binding ValueStepTransform}"
                                  MinorStepRatio="0.3"
                                  IsHitTestVisible="False"
-                                 StepColor="{Binding RulerGridColor}">
+                                 StepColor="{Binding RulerColor}">
                         <local:Ruler.Resources>
                             <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
                                 <Setter Property="Margin" Value="2 0"/>
@@ -80,7 +81,7 @@
 
                     <!-- Vertical Ruler -->
                     <local:Ruler Foreground="{Binding RulerTextColor}"
-                                 Width="15"
+                                 Width="{Binding ActualWidth, ElementName=MainBorder}"
                                  VerticalAlignment="Stretch"
                                  HorizontalAlignment="Left" 
                                  MarkerControlReference="{Binding ElementName=MainBorder}"
@@ -91,7 +92,7 @@
                                  Position="Left"
                                  IsHitTestVisible="False"
                                  MinorStepRatio="0.3"
-                                 StepColor="{Binding RulerGridColor}">
+                                 StepColor="{Binding RulerColor}">
                         <local:Ruler.Resources>
                             <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
                                 <Setter Property="Margin" Value="2 0"/>
@@ -137,6 +138,20 @@
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal" Margin="0 5">
+                            <TextBox Text="Pointer color" Width="135" FontWeight="Bold"/>
+                            <ComboBox VerticalAlignment="Center" 
+                                      HorizontalAlignment="Center"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0 5">
+                            <TextBox Text="Ruler text color" Width="135" FontWeight="Bold"/>
+                            <ComboBox VerticalAlignment="Center" 
+                                      HorizontalAlignment="Center"
+                                      ItemsSource="{Binding TextColors}"    
+                                      SelectedItem="{Binding RulerTextColor}"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0 5">
                             <TextBox Text="Horizontal grid" 
                                      Width="135" 
                                      FontWeight="Bold"/>
@@ -150,6 +165,13 @@
                             <CheckBox VerticalAlignment="Center" 
                                       HorizontalAlignment="Center"
                                       IsChecked="{Binding VerticalGrid}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0 5">
+                            <TextBox Text="Line color" Width="135" FontWeight="Bold"/>
+                            <ComboBox VerticalAlignment="Center" 
+                                      HorizontalAlignment="Center"
+                                      ItemsSource="{Binding RulerColors}"    
+                                      SelectedItem="{Binding RulerColor}"/>
                         </StackPanel>
                     </StackPanel>
                 </Border>

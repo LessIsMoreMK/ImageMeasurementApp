@@ -1,14 +1,13 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Drawing.Imaging;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Microsoft.Win32;
-using System.Windows.Controls;
-using System.Diagnostics;
 
 namespace ImageMeasurementApp
 {
@@ -22,6 +21,7 @@ namespace ImageMeasurementApp
         private ImageSource mDisplayImage;
 
         private int mSelectedUnitIndex;
+
         private double mZoomFactor;
 
         /// <summary>
@@ -39,6 +39,16 @@ namespace ImageMeasurementApp
             }
         }
 
+        public int SelectedUnitIndex
+        {
+            get => mSelectedUnitIndex;
+            set
+            {
+                mSelectedUnitIndex = value;
+                PictureSizeChanged();
+            }
+        }
+
         public double ImagePixelWidth { get; set; }
         public double ImagePixelHeight { get; set; }
 
@@ -52,6 +62,7 @@ namespace ImageMeasurementApp
         public ApplicationPage CurrentPage { get; private set; } = ApplicationPage.MainPage;
 
         public BaseViewModel CurrentPageViewModel { get; set; }
+
         public ImageSource DisplayImage
         {
             get => mDisplayImage;
@@ -68,50 +79,33 @@ namespace ImageMeasurementApp
                 "Nanometer (nm)"
             };
 
-        public int SelectedUnitIndex
-        { 
-            get => mSelectedUnitIndex;
-            set
-            {
-                mSelectedUnitIndex = value;
-                PictureSizeChanged();
-            }
-        }
+        public List<string> TextColors { get; }
+           = new List<string>
+           {
+                "Yellow",
+                "Red",
+                "Blue",
+                "Orange",
+                "Green",
+                "White",
+                "Black"
+           };
 
-        public void PictureSizeChanged()
-        {
-            switch(SelectedUnitIndex)
-            {
-                //Pixel (px)
-                case 0:
-                    ImageDisplayWidth = ImagePixelWidth / mZoomFactor;
-                    ImageDisplayHeight = ImagePixelHeight / mZoomFactor;
-                    break;
-                //Centimeter (cm)
-                case 1:
-                    ImageDisplayWidth = ImagePixelWidth / mZoomFactor * CameraPixelSize / 1000 / 10;
-                    ImageDisplayHeight = ImagePixelHeight / mZoomFactor * CameraPixelSize / 1000 / 10;
-                    break;
-                //Milimeter (mm)
-                case 2:
-                    ImageDisplayWidth = ImagePixelWidth / mZoomFactor * CameraPixelSize / 1000;
-                    ImageDisplayHeight = ImagePixelHeight / mZoomFactor * CameraPixelSize / 1000;
-                    break;
-                //Mikrometer (μm)
-                case 3:
-                    ImageDisplayWidth = ImagePixelWidth / mZoomFactor * CameraPixelSize;
-                    ImageDisplayHeight = ImagePixelHeight / mZoomFactor * CameraPixelSize;
-                    break;
-                //Nanometer (nm)
-                case 4:
-                    ImageDisplayWidth = ImagePixelWidth / mZoomFactor * CameraPixelSize * 1000;
-                    ImageDisplayHeight = ImagePixelHeight / mZoomFactor * CameraPixelSize * 1000; 
-                    break;
-            }
-        }
+        public List<string> RulerColors { get; }
+           = new List<string>
+           {
+                "Yellow",
+                "Red",
+                "Blue",
+                "Orange",
+                "Green",
+                "White",
+                "Black"
+           };
 
         public string RulerTextColor { get; set; } = "Yellow";
-        public string RulerGridColor { get; set; } = "Blue";
+        public string RulerColor { get; set; } = "Blue";
+
         public string RulerHorizontalHeight { get; set; } = "25";
 
         public bool PointerCoordinates { get; set; }
@@ -124,6 +118,7 @@ namespace ImageMeasurementApp
         #endregion
 
         #region Public Commands
+
         public ICommand LoadImageCommand { get; set; }
         public ICommand LoadDefaultImageCommand { get; set; }
         public ICommand ConvertImageCommand { get; set; }
@@ -172,9 +167,64 @@ namespace ImageMeasurementApp
             DisplayImage = image;
         }
 
+        public void ConvertImage()
+        {
+            //var watch = Stopwatch.StartNew();
+            //var temp = ImageLocationToByte(DisplayImage);
+            //watch.Stop();
+            //var time = watch.ElapsedMilliseconds;
+
+            //var watch2 = Stopwatch.StartNew();
+            //ImageResult = ByteToImage(temppp);
+            //watch.Stop();-- 
+            //var time2 = watch.ElapsedMilliseconds;
+
+            if (DisplayImage == null)
+                return;
+
+            var bitmapSource = (BitmapSource)(DisplayImage);
+            var bm = BitmapFromSource(bitmapSource);
+            var temp = ColorToGrayscale(bm);
+            var bit = BitmapToImageSource(temp);
+
+            DisplayImage = bit;
+        }
+
         #endregion
 
         #region Public Helper Methods
+
+        public void PictureSizeChanged()
+        {
+            switch (SelectedUnitIndex)
+            {
+                //Pixel (px)
+                case 0:
+                    ImageDisplayWidth = ImagePixelWidth / mZoomFactor;
+                    ImageDisplayHeight = ImagePixelHeight / mZoomFactor;
+                    break;
+                //Centimeter (cm)
+                case 1:
+                    ImageDisplayWidth = ImagePixelWidth / mZoomFactor * CameraPixelSize / 1000 / 10;
+                    ImageDisplayHeight = ImagePixelHeight / mZoomFactor * CameraPixelSize / 1000 / 10;
+                    break;
+                //Milimeter (mm)
+                case 2:
+                    ImageDisplayWidth = ImagePixelWidth / mZoomFactor * CameraPixelSize / 1000;
+                    ImageDisplayHeight = ImagePixelHeight / mZoomFactor * CameraPixelSize / 1000;
+                    break;
+                //Mikrometer (μm)
+                case 3:
+                    ImageDisplayWidth = ImagePixelWidth / mZoomFactor * CameraPixelSize;
+                    ImageDisplayHeight = ImagePixelHeight / mZoomFactor * CameraPixelSize;
+                    break;
+                //Nanometer (nm)
+                case 4:
+                    ImageDisplayWidth = ImagePixelWidth / mZoomFactor * CameraPixelSize * 1000;
+                    ImageDisplayHeight = ImagePixelHeight / mZoomFactor * CameraPixelSize * 1000;
+                    break;
+            }
+        }
 
         public void GoToPage(ApplicationPage page, BaseViewModel viewModel = null)
         {
@@ -188,29 +238,9 @@ namespace ImageMeasurementApp
                 OnPropertyChanged(nameof(CurrentPage));
         }
 
+        #endregion
+
         #region Image Conversion Methods
-
-        public void ConvertImage()
-        {
-            //var watch = Stopwatch.StartNew();
-            //var temp = ImageLocationToByte(DisplayImage);
-            //watch.Stop();
-            //var time = watch.ElapsedMilliseconds;
-
-            //var watch2 = Stopwatch.StartNew();
-            //ImageResult = ByteToImage(temppp);
-            //watch.Stop();-- 
-            //var time2 = watch.ElapsedMilliseconds;
-            if (DisplayImage == null)
-                return;
-
-             var bitmapSource = (BitmapSource)(DisplayImage);
-            var bm = BitmapFromSource(bitmapSource);
-            var temp = ColorToGrayscale(bm);
-            var bit = BitmapToImageSource(temp);
-
-            DisplayImage = bit;
-        }
 
         public Bitmap BitmapFromSource(BitmapSource bitmapsource)
         {
@@ -365,8 +395,6 @@ namespace ImageMeasurementApp
                 return bitmapimage;
             }
         }
-
-        #endregion
 
         #endregion
     }
