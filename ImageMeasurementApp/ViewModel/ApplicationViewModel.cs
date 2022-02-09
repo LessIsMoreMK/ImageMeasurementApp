@@ -1,7 +1,6 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -11,9 +10,6 @@ using System.Windows.Media.Imaging;
 
 namespace ImageMeasurementApp
 {
-    /// <summary>
-    /// The application state as a view model
-    /// </summary>
     public class ApplicationViewModel : BaseViewModel
     {
         #region Private Members
@@ -24,11 +20,14 @@ namespace ImageMeasurementApp
 
         private double mZoomFactor;
 
+        #endregion
+
+        #region Public Properties
+
         /// <summary>
         /// Camera pixel size equivalent in Mikrometer (μm)
         /// </summary>
-        private double CameraPixelSize = 12.0;
-
+        public double CameraPixelSize = 12.0;
         public double ZoomFactor
         {
             get => mZoomFactor;
@@ -38,7 +37,6 @@ namespace ImageMeasurementApp
                 PictureSizeChanged();
             }
         }
-
         public int SelectedUnitIndex
         {
             get => mSelectedUnitIndex;
@@ -49,28 +47,18 @@ namespace ImageMeasurementApp
             }
         }
 
-        public double ImagePixelWidth { get; set; }
-        public double ImagePixelHeight { get; set; }
-
-        public double ImageDisplayWidth { get; set; }
-        public double ImageDisplayHeight { get; set; }
-
-        #endregion
-
-        #region Public Properties
-
-        public ApplicationPage CurrentPage { get; private set; } = ApplicationPage.MainPage;
-
-        public BaseViewModel CurrentPageViewModel { get; set; }
-
         public ImageSource DisplayImage
         {
             get => mDisplayImage;
             set { mDisplayImage = value; }
         }
+        public double ImagePixelWidth { get; set; }
+        public double ImagePixelHeight { get; set; }
+        public double ImageDisplayWidth { get; set; }
+        public double ImageDisplayHeight { get; set; }
 
-        public ObservableCollection<string> MeasureUnits { get; }
-            = new ObservableCollection<string>
+        public List<string> MeasureUnits { get; }
+            = new List<string>
             {
                 "Pixels (px)",
                 "Centimeter (cm)",
@@ -78,8 +66,7 @@ namespace ImageMeasurementApp
                 "Mikrometer (μm)",
                 "Nanometer (nm)"
             };
-
-        public List<string> TextColors { get; }
+        public List<string> RulerTextColors { get; }
            = new List<string>
            {
                 "Yellow",
@@ -90,7 +77,6 @@ namespace ImageMeasurementApp
                 "White",
                 "Black"
            };
-
         public List<string> RulerColors { get; }
            = new List<string>
            {
@@ -102,18 +88,28 @@ namespace ImageMeasurementApp
                 "White",
                 "Black"
            };
+        public List<string> MouseLinesColors { get; }
+           = new List<string>
+           {
+                "Transparent",
+                "Yellow",
+                "Red",
+                "Blue",
+                "Orange",
+                "Green",
+                "White",
+                "Black"
+           };
 
         public string RulerTextColor { get; set; } = "Yellow";
         public string RulerColor { get; set; } = "Blue";
+        public string MouseLinesColor { get; set; } = "Red";
+        public int RulerVerticalWidth { get; set; } = 15;
+        public int RulerHorizontalWidth { get; set; } = 15;
 
-        public string RulerHorizontalHeight { get; set; } = "25";
 
-        public bool PointerCoordinates { get; set; }
-        public bool HorizontalGrid { get; set; }
-        public bool VerticalGrid { get; set; }
-        
-
-        
+        public ApplicationPage CurrentPage { get; private set; } = ApplicationPage.MainPage;
+        public BaseViewModel CurrentPageViewModel { get; set; }
 
         #endregion
 
@@ -122,6 +118,9 @@ namespace ImageMeasurementApp
         public ICommand LoadImageCommand { get; set; }
         public ICommand LoadDefaultImageCommand { get; set; }
         public ICommand ConvertImageCommand { get; set; }
+
+        public ICommand ChangeRulerVerticalWidthCommand { get; set; }
+        public ICommand ChangeRulerHorizontalHeightCommand { get; set; }
 
         #endregion
 
@@ -136,11 +135,28 @@ namespace ImageMeasurementApp
             LoadImageCommand = new RelayCommand(LoadImage);
             ConvertImageCommand = new RelayCommand(ConvertImage);
 
+            ChangeRulerVerticalWidthCommand = new RelayCommand(ChangeRulerVerticalWidth);
+            ChangeRulerHorizontalHeightCommand = new RelayCommand(ChangeRulerHorizontalWidth);
         }
 
         #endregion
 
         #region Command Methods
+
+        public void ChangeRulerVerticalWidth()
+        {
+            if (this.RulerVerticalWidth == 15)
+                this.RulerVerticalWidth = 3000;
+            else
+                this.RulerVerticalWidth = 15;
+        }
+        public void ChangeRulerHorizontalWidth()
+        {
+            if (this.RulerHorizontalWidth == 15)
+                this.RulerHorizontalWidth = 3000;
+            else
+                this.RulerHorizontalWidth = 15;
+        }
 
         private void LoadImage()
         {

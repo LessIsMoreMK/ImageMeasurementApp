@@ -18,23 +18,17 @@
                         </Rectangle>
                         
                         <Canvas Panel.ZIndex="1">
-                            <Line Stroke="Red" StrokeThickness="1" StrokeDashArray="3" Stretch="None" x:Name="marker" Visibility="Collapsed"/>
+                            <Line Stroke="{Binding ApplicationViewModel.MouseLinesColor, 
+                                            Source={x:Static local:ViewModelLocator.Instance}}"
+                                  StrokeThickness="1" 
+                                  StrokeDashArray="3" 
+                                  Stretch="None" 
+                                  x:Name="marker" 
+                                  Visibility="Collapsed"/>
                         </Canvas>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-
-    <Style TargetType="GroupBox" BasedOn="{StaticResource {x:Type GroupBox}}">
-        <Setter Property="HorizontalAlignment" Value="Stretch"/>
-        <Setter Property="Margin" Value="0 10"/>
-        <Setter Property="Padding" Value="10"/>
-    </Style>
-
-    <Style x:Key="HearderTextboxStyle" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-        <Setter Property="DockPanel.Dock" Value="Left"/>
-        <Setter Property="Width" Value="100"/>
-    </Style>
-
 </ResourceDictionary>

@@ -41,6 +41,7 @@
             <Border Grid.Row="1" Grid.Column="1"
                     BorderThickness="1" 
                     BorderBrush="{StaticResource BlueMediumBrush}" 
+                    Width="{Binding BorderWidth, Mode=OneWayToSource}"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch">
                 <Grid>
@@ -60,8 +61,7 @@
 
                     <!-- Horizontal Ruler -->
                     <local:Ruler Foreground="{Binding RulerTextColor}"
-                                 Visibility="Visible"
-                                 Height="{Binding ActualWidth, ElementName=MainBorder}"
+                                 Height="{Binding RulerHorizontalWidth}"
                                  VerticalAlignment="Top"
                                  HorizontalAlignment="Stretch" 
                                  MarkerControlReference="{Binding ElementName=MainBorder}"
@@ -81,7 +81,7 @@
 
                     <!-- Vertical Ruler -->
                     <local:Ruler Foreground="{Binding RulerTextColor}"
-                                 Width="{Binding ActualWidth, ElementName=MainBorder}"
+                                 Width="{Binding RulerVerticalWidth}"
                                  VerticalAlignment="Stretch"
                                  HorizontalAlignment="Left" 
                                  MarkerControlReference="{Binding ElementName=MainBorder}"
@@ -95,7 +95,7 @@
                                  StepColor="{Binding RulerColor}">
                         <local:Ruler.Resources>
                             <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-                                <Setter Property="Margin" Value="2 0"/>
+                                <Setter Property="Margin" Value="2 1"/>
                                 <Setter Property="FontSize" Value="10"/>
                                 <Setter Property="LineHeight" Value="10"/>
                                 <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
@@ -129,53 +129,46 @@
                         BorderThickness="1" >
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0 5">
-                            <TextBox Text="Pointer coordinates" 
-                                     Width="135" 
-                                     FontWeight="Bold"/>
-                            <CheckBox VerticalAlignment="Center" 
-                                      HorizontalAlignment="Center"
-                                      IsChecked="{Binding PointerCoordinates}"/>
-                        </StackPanel>
-
-                        <StackPanel Orientation="Horizontal" Margin="0 5">
-                            <TextBox Text="Pointer color" Width="135" FontWeight="Bold"/>
-                            <ComboBox VerticalAlignment="Center" 
-                                      HorizontalAlignment="Center"/>
-                        </StackPanel>
-
-                        <StackPanel Orientation="Horizontal" Margin="0 5">
-                            <TextBox Text="Ruler text color" Width="135" FontWeight="Bold"/>
+                            <TextBox Text="Ruler text color" Width="125" FontWeight="Bold"/>
                             <ComboBox VerticalAlignment="Center" 
                                       HorizontalAlignment="Center"
-                                      ItemsSource="{Binding TextColors}"    
+                                      ItemsSource="{Binding RulerTextColors}"    
                                       SelectedItem="{Binding RulerTextColor}"/>
                         </StackPanel>
-
+                        
                         <StackPanel Orientation="Horizontal" Margin="0 5">
-                            <TextBox Text="Horizontal grid" 
-                                     Width="135" 
-                                     FontWeight="Bold"/>
-                            <CheckBox VerticalAlignment="Center" 
-                                      HorizontalAlignment="Center"
-                                      IsChecked="{Binding HorizontalGrid}"/>
-                        </StackPanel>
-
-                        <StackPanel Orientation="Horizontal" Margin="0 5">
-                            <TextBox Text="Vertical grid" Width="135" FontWeight="Bold"/>
-                            <CheckBox VerticalAlignment="Center" 
-                                      HorizontalAlignment="Center"
-                                      IsChecked="{Binding VerticalGrid}"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="0 5">
-                            <TextBox Text="Line color" Width="135" FontWeight="Bold"/>
+                            <TextBox Text="Ruler lines color" Width="125" FontWeight="Bold"/>
                             <ComboBox VerticalAlignment="Center" 
                                       HorizontalAlignment="Center"
                                       ItemsSource="{Binding RulerColors}"    
                                       SelectedItem="{Binding RulerColor}"/>
                         </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0 5">
+                            <TextBox Text="Mouse lines color" Width="125" FontWeight="Bold"/>
+                            <ComboBox VerticalAlignment="Center" 
+                                      HorizontalAlignment="Center"
+                                      ItemsSource="{Binding MouseLinesColors}"    
+                                      SelectedItem="{Binding MouseLinesColor}"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0 5">
+                            <TextBox Text="Horizontal grid" Width="125" FontWeight="Bold"/>
+                            <CheckBox VerticalAlignment="Center" 
+                                      HorizontalAlignment="Center"
+                                      Command="{Binding ChangeRulerHorizontalHeightCommand}"
+                                      CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0 5">
+                            <TextBox Text="Vertical grid" Width="125" FontWeight="Bold"/>
+                            <CheckBox VerticalAlignment="Center" 
+                                      HorizontalAlignment="Center"
+                                      Command="{Binding ChangeRulerVerticalWidthCommand}"
+                                      CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}" />
+                        </StackPanel>
                     </StackPanel>
                 </Border>
-
             </StackPanel>
         </Grid>
     </Border>
